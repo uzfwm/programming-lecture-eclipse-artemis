@@ -1,0 +1,124 @@
+package Adventskalendar;
+
+public class AdventCalendar {	
+	
+	int currentDay;
+	String[] sweets;
+	boolean[] opendoors = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}; 
+	
+	
+	//Konstruktor
+	public AdventCalendar(String[] sweets) {
+		this.sweets = sweets;
+		this.currentDay = 0;
+	}
+	
+	
+	//gibt den aktuellen Tag als Ganzzahl zurück
+	public int getDay() {
+		return currentDay;
+	}
+	
+	
+	// erhöht den intern gespeicherten Tag
+	public boolean nextDay() {
+		if(currentDay == 24) {
+			return false;
+		} else {
+			currentDay++;
+			return true;
+		}
+	}
+	
+	
+	//erhöht gespeicherten Tag um mehrere Tage
+	public boolean nextDays(int days) {
+		boolean next;
+		
+		if(days <= 0 || days + currentDay > 24) {
+			next = false;
+		}else {
+			next = true;
+			currentDay += days;
+		} 
+		return next;
+	}
+	
+	
+	//überprüft, ob die Tür mit der passenden Nummer bereits geöffnet wurde
+	public boolean isDoorOpen(int number) {
+		
+		boolean doorOpen;
+		
+		if(number < 1 || number > 24) {
+			doorOpen = false;
+		} else if (opendoors[number-1] == true) {
+			doorOpen = true;
+		} else {
+			doorOpen = false;
+		}
+		return doorOpen;
+	}
+	
+	
+	//öffnet die Tür mit der passenden Nummer und gibt die Süßigkeit als Zeichenkette zurück
+	public String openDoor(int number) {
+		
+		String sweet;
+		
+		if (number > currentDay || number < 1 || number > 24) {
+			sweet = null;
+		}else if(isDoorOpen(number) == true) {
+			sweet = null;
+		} else {
+			sweet = sweets[number-1];
+			opendoors[number-1] = true;
+		}
+		return sweet;
+	}
+	
+	
+	//gibt die Anzahl der bisher noch nicht geöff- neten Türen zurück, die zum aktuellen Tag geöffnet werden könnten
+	public int numberOfUnopenedDoors() {
+		
+		int unopeneddoor = 0;
+		
+		for(int i = 0; i < currentDay; i++) {
+			if(opendoors[i] == false) {
+				unopeneddoor++;
+			}
+		}
+		return unopeneddoor;
+	}
+
+	
+	//setzt den Kalender zum Ursprungszustand zurück
+	public void reset() {
+
+		currentDay = 0;
+		for(int i = 0; i < 24; i++) {
+			opendoors[i] = false;
+		}
+		
+	}
+	
+	
+	//gibt den Adventskalender in Textform zurück
+	public String tostring() {
+		String calendar = null;
+		
+		for(int i = 0; i < 24; i++) {
+			if(opendoors[i] == true) {
+				calendar += "[ ]";
+			} else {
+				calendar += "[Schokolade]";
+			}
+			
+			if(i < 23 && (i+1) % 4 == 0) {
+				calendar += "\n";
+			}
+		}
+		return calendar;
+	}
+
+}
